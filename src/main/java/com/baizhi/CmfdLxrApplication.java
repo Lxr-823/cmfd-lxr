@@ -10,6 +10,7 @@ public class CmfdLxrApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CmfdLxrApplication.class, args);
+        System.out.println("gitgitgit");
     }
 
 }
