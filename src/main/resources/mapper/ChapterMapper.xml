@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ChapterDao">
+    <select id="queryAll" resultType="Chapter">
+        select  *  from  chapter where ALBUM_ID=#{id} limit #{start},#{rows}
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select COUNT(ID) from  chapter where ALBUM_ID=#{id}
+    </select>
+
+    <!--添加-->
+    <insert id="addChapter">
+        insert  into  chapter (ID,TITLE,ALBUM_ID,SIZE,DURATION,SRC,STATUS) values (#{id},#{title},#{album_id},#{size},#{duration},#{src},#{status})
+    </insert>
+    <!--删除-->
+        <delete id="deleteChapter">
+            delete  from  chapter where id in
+            <foreach collection="array" open="(" item="id" separator="," close=")">
+                #{id}
+            </foreach>
+        </delete>
+    <!--修改-->
+    <update id="updateChapter">
+        update  chapter
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title!=null">title=#{title},</if>
+            <if test="album_id!=null">album_id=#{album_id},</if>
+            <if test="size!=null">size=#{size},</if>
+            <if test="duration!=null">duration=#{duration},</if>
+            <if test="src!=null">src=#{src},</if>
+            <if test="status!=null">status=#{status}</if>
+        </trim>
+        where id=#{id}
+    </update>
+    <!--查询一个-->
+    <select id="selectById" resultType="Chapter">
+        select * from  chapter where  id=#{id}
+    </select>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ArticleDao">
+    <select id="queryAll" resultType="Article">
+        select id,title,author,content,guru_id,create_date,status from article limit #{start},#{rows}
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+  select COUNT(ID) from article
+    </select>
+    
+    <delete id="delete">
+        delete from  article  where ID in
+        <foreach collection="array" open="(" item="id" separator="," close=")" >
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--添加-->
+    <insert id="addArticle">
+        insert into article(ID, TITLE, AUTHOR, CONTENT, GURU_ID, CREATE_DATE, STATUS) values (#{id},#{title},#{author},#{content},#{guru_id},#{create_date},#{status})
+    </insert>
+    <!--修改-->
+    <update id="updateArticle">
+        update article
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title!=null">title=#{title},</if>
+            <if test="author!=null">author=#{author},</if>
+            <if test="content!=null">content=#{content},</if>
+            <if test="guru_id!=null">guru_id=#{guru_id},</if>
+            <if test="create_date!=null">create_date=#{create_date},</if>
+            <if test="status!=null">status=#{status},</if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <!--查找-->
+    <select id="selectById" resultType="Article">
+        select * from  article where id =#{id}
+    </select>
+
+    <!--根据上师id查询文章详情-->
+    <select id="selectByGuruId" resultType="Article">
+        select id,title,author,content,guru_id,create_date,status from  article where GURU_ID=#{id};
+    </select>
+</mapper>
